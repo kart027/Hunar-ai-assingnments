@@ -1,0 +1,55 @@
+services:
+  # ------------------------------------
+  # 1. FastAPI Backend (Web Service)
+  # ------------------------------------
+  - type: web
+    name: hunar-api
+    env: python
+    region: singapore
+    buildCommand: |
+      cd backend
+      pip install -r requirements.txt
+    startCommand: |
+      cd backend
+      python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hunar-db
+          property: connectionString
+      - key: HUNAR_API_KEY
+        sync: false 
+      - key: PDL_API_KEY
+        sync: false 
+      - key: FRONTEND_ORIGIN
+        value: "https://hunar-frontend.onrender.com"
+
+  # ------------------------------------
+  # 2. Next.js Frontend (Web Service)
+  # ------------------------------------
+  - type: web
+    name: hunar-frontend
+    env: node
+    region: singapore
+    buildCommand: |
+      cd frontend
+      npm install
+      npm run build
+    startCommand: |
+      cd frontend
+      npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://hunar-api.onrender.com/api"
+
+databases:
+  # ------------------------------------
+  # 3. Persistent PostgreSQL Database
+  # ------------------------------------
+  - name: hunar-db
+    region: singapore
+    plan: free
