@@ -116,7 +116,7 @@ export default function NewInterviewPage() {
                 No active agents found. Please check your Hunar account.
               </div>
             ) : (
-              <Select value={form.agent_id} onValueChange={v => setForm(f => ({ ...f, agent_id: v }))}>
+              <Select value={form.agent_id} onValueChange={v => setForm(f => ({ ...f, agent_id: v || "" }))}>
                 <SelectTrigger className="bg-accent/50 border-border/50 focus:border-primary">
                   <SelectValue placeholder="Select an agent" />
                 </SelectTrigger>

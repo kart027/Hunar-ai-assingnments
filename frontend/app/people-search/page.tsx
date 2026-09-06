@@ -359,7 +359,7 @@ export default function PeopleSearchPage() {
                   {loadingAgents ? (
                     <Skeleton className="h-10 rounded-lg" />
                   ) : (
-                    <Select value={agentId} onValueChange={setAgentId}>
+                    <Select value={agentId} onValueChange={v => setAgentId(v || "")}>
                       <SelectTrigger className="bg-accent/50 border-border/50">
                         <SelectValue placeholder="Select agent" />
                       </SelectTrigger>
